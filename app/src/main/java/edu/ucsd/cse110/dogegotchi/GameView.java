@@ -6,7 +6,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.media.MediaPlayer;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.SurfaceHolder;
@@ -33,8 +32,6 @@ public class GameView
 
     boolean canvasCreated = false;
 
-    MediaPlayer dayPlayer, nightPlayer;
-
     private Collection<ISprite> sprites;
 
     /**
@@ -49,14 +46,6 @@ public class GameView
 
     public GameView(final Context context) {
         this(context, null);
-    }
-
-    /**
-     * Set the background tunes that play during the day/night.
-     */
-    public void setMedia(final MediaPlayer dayPlayer, final MediaPlayer nightPlayer) {
-        this.dayPlayer   = dayPlayer;
-        this.nightPlayer = nightPlayer;
     }
 
     public void setSprites(final Collection<ISprite> sprites) {
@@ -136,21 +125,9 @@ public class GameView
         Log.i(this.getClass().getSimpleName(), "It is now: " + newPeriod);
 
         if (newPeriod == Period.DAY) {
-            if (nightPlayer.isPlaying()) {
-                nightPlayer.pause();
-                nightPlayer.seekTo(0); // rewind
-            }
             bg = bg_day;
-            dayPlayer.start();
-            dayPlayer.setLooping(true);
         } else if (newPeriod == Period.NIGHT) {
-            if (dayPlayer.isPlaying()) {
-                dayPlayer.pause();
-                dayPlayer.seekTo(0); // rewind
-            }
             bg = bg_night;
-            nightPlayer.start();
-            nightPlayer.setLooping(true);
         }
 
         onTick(); // to force a draw

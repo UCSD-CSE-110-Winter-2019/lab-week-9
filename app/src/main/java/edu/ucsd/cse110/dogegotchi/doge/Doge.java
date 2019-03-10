@@ -7,17 +7,14 @@ import com.google.common.base.Preconditions;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import edu.ucsd.cse110.dogegotchi.daynightcycle.IDayNightCycleObserver;
 import edu.ucsd.cse110.dogegotchi.observer.ISubject;
 import edu.ucsd.cse110.dogegotchi.ticker.ITickerObserver;
 
 /**
  * Logic for our friendly, sophisticated doge.
- *
- * TODO: Exercise 1 -- add support for {@link State#SLEEPING}.
- *
- * TODO: Exercise 2 -- enable {@link State#SAD} mood, and add support for {@link State#EATING} behavior.
  */
-public class Doge implements ISubject<IDogeObserver>, ITickerObserver {
+public class Doge implements ISubject<IDogeObserver>, ITickerObserver, IDayNightCycleObserver {
     /**
      * Current number of ticks. Reset after every potential mood swing.
      */
@@ -74,12 +71,15 @@ public class Doge implements ISubject<IDogeObserver>, ITickerObserver {
     }
 
     /**
-     * TODO: Exercise 1 -- Fill in this method to randomly make doge sad with probability {@link #moodSwingProbability}.
-     *
      * **Strictly follow** the Finite State Machine in the write-up.
      */
     private void tryRandomMoodSwing() {
-        // TODO: Exercise 1 -- Implement this method...
+        if (state == State.EATING) {
+            setState(State.HAPPY);
+        }
+        else if(state == State.HAPPY && Math.random() < moodSwingProbability) {
+            setState(State.SAD);
+        }
     }
 
     @Override
@@ -105,13 +105,25 @@ public class Doge implements ISubject<IDogeObserver>, ITickerObserver {
         this.observers.forEach(observer -> observer.onStateChange(newState));
     }
 
+    @Override
+    public void onPeriodChange(Period newPeriod) {
+        if (newPeriod == Period.DAY) {
+            setState(State.HAPPY);
+        } else {
+            setState(State.SLEEPING);
+        }
+    }
+
+    public void onFoodPresented() {
+        setState(State.EATING);
+    }
+
     /**
      * Moods and actions for our doge.
      */
     public enum State {
         HAPPY,
         SAD,
-        // TODO: Implement asleep and eating states, and transitions between all states.
         SLEEPING,
         EATING;
     }

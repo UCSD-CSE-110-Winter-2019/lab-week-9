@@ -16,6 +16,7 @@ public class AsyncTaskTicker
         extends AsyncTask<Void, Void, Void>
         implements ITicker
 {
+    int counter = 0;
     /**
      * Observers of this ticker.
      */
@@ -102,7 +103,9 @@ public class AsyncTaskTicker
     }
 
     private void doTick() {
-        Log.i(this.getClass().getSimpleName(), "🕰 Tick...");
-        observers.forEach(ITickerObserver::onTick);
+        if (counter++ % 2 == 0) {
+            Log.i(this.getClass().getSimpleName(), "🕰 Tick...");
+            observers.forEach(ITickerObserver::onTick);
+        }
     }
 }

@@ -2,6 +2,7 @@ package edu.ucsd.cse110.dogegotchi.doge;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
@@ -21,6 +22,8 @@ public class DogeView
     private static final String LOOKUP_TABLE_PRECONDITION_ERROR_MSG =
             "No %s configured for state %s in lookup table %s.";
 
+    private Context context;
+
     /**
      * Lookup table for each state's bitmap.
      */
@@ -31,19 +34,36 @@ public class DogeView
      */
     private ImmutableMap<Doge.State, Coord> coordsPerState;
 
+    private AccessoryView accessoryView;
+
     public DogeView(final Context context,
                     final Doge.State initialState,
                     final Map<Doge.State, Bitmap> viewsPerState,
-                    final Map<Doge.State, Coord> coordsPerState) {
+                    final Map<Doge.State, Coord> coordsPerState,
+                    AccessoryView accessoryView) {
         Preconditions.checkNotNull(context);
         Preconditions.checkNotNull(viewsPerState);
         Preconditions.checkNotNull(coordsPerState);
 
+        this.context = context;
         this.viewsPerState  = ImmutableMap.copyOf(viewsPerState);
         this.coordsPerState = ImmutableMap.copyOf(coordsPerState);
+        this.accessoryView = accessoryView;
 
         // load sprite for initial state
         onStateChange(initialState);
+    }
+
+    @Override
+    public void draw(Canvas canvas) {
+
+        // draw the doggo
+        super.draw(canvas);
+
+        // draw accessory
+        if (accessoryView != null) {
+            accessoryView.drawView(canvas);
+        }
     }
 
     /**
@@ -74,4 +94,8 @@ public class DogeView
                 String.format(LOOKUP_TABLE_PRECONDITION_ERROR_MSG,
                         "coordinates", state.toString(), "coordsPerState"));
     }
+
+    public void setAccessoryView(AccessoryView accessoryView) {
+        this.accessoryView = accessoryView;
+    };
 }

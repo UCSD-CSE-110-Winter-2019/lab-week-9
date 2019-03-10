@@ -5,12 +5,17 @@
     <integer name="happy_y">300</integer>
 
     <!-- Sleeping -->
-    <integer name="sleeping_x">750</integer>
-    <integer name="sleeping_y">240</integer>
+    <integer name="sleeping_x">1000</integer>
+    <integer name="sleeping_y">300</integer>
 
-    <!-- TODO: Exercise 1 - Setup SAD coordinates (also set up sprite in MainActivity.java) -->
+    <integer name="sad_x">600</integer>
+    <integer name="sad_y">300</integer>
 
-    <!-- TODO: Exercise 2 - Setup EATING coordinates (also set up sprite in MainActivity.java) -->
+    <integer name="eating_x">600</integer>
+    <integer name="eating_y">300</integer>
+
+    <integer name="food_x">600</integer>
+    <integer name="food_y">500</integer>
 
     <!-- TODO: Exercise 2 - change to 50 when implementing EATING behavior
                If you set this to a non-zero value before setting up SAD
@@ -19,5 +24,5 @@
     -->
     <!-- Probability of a mood swing. Integer range: [0,100) -->
     <integer name="mood_swings_per_period">5</integer>
-    <integer name="mood_swing_probability">50</integer>
+    <integer name="mood_swing_probability">90</integer>
 </resources>
